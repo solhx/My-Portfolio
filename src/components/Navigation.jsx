@@ -5,15 +5,20 @@ import './Navigation.css'
 
 function Navigation() {
   const currentSection = useStore((state) => state.currentSection)
-  const isTransitioning = useStore((state) => state.isTransitioning)
-  const setCurrentSection = useStore((state) => state.setCurrentSection)
 
   const navItems = [
-     { id: SECTIONS.HOME, label: 'Home', icon: '🌍' },
+    { id: SECTIONS.HOME, label: 'Home', icon: '🌍' },
     { id: SECTIONS.ABOUT, label: 'About', icon: '👨‍🚀' },
-   { id: SECTIONS.PROJECTS, label: 'Projects', icon: '🚀' },
-   { id: SECTIONS.CONTACT, label: 'Contact', icon: '📡' },
+    { id: SECTIONS.PROJECTS, label: 'Projects', icon: '🚀' },
+    { id: SECTIONS.CONTACT, label: 'Contact', icon: '📡' },
   ]
+
+  const scrollToSection = (sectionId) => {
+    const element = document.getElementById(sectionId)
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+  }
 
   return (
     <motion.nav
@@ -22,13 +27,12 @@ function Navigation() {
       animate={{ y: 0, opacity: 1 }}
       transition={{ delay: 0.5, type: 'spring', stiffness: 100 }}
     >
-      <div className="nav-logo">
-        <motion.span
-          animate={{ rotate: 360 }}
-          transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
-        >
-          🌌
-        </motion.span>
+      <div 
+        className="nav-logo"
+        onClick={() => scrollToSection('home')}
+        style={{ cursor: 'pointer' }}
+      >
+      
         <span>Hossam Hassan</span>
       </div>
 
@@ -41,14 +45,8 @@ function Navigation() {
             whileTap={{ scale: 0.95 }}
           >
             <button
-              onClick={() => {
-                if (!isTransitioning) {
-                  setCurrentSection(item.id)
-                  // Scroll to top when navigating to a new section
-                  window.scrollTo({ top: 0, behavior: 'smooth' })
-                }
-              }}
-              disabled={isTransitioning}
+              onClick={() => scrollToSection(item.id)}
+              className="nav-button"
             >
               <span className="nav-icon">{item.icon}</span>
               <span className="nav-label">{item.label}</span>

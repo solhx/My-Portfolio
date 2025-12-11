@@ -2,28 +2,34 @@
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  padding: 20px 40px;
+  right: 0;
+  z-index: 1000;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  z-index: 100;
-  background: rgba(10, 14, 39, 0.8);
-  backdrop-filter: blur(10px);
+  justify-content: space-between;
+  padding: 20px 60px;
+  background: rgba(10, 14, 39, 0.95);
+  backdrop-filter: blur(20px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
 }
 
 .nav-logo {
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-size: 1.5rem;
+  gap: 12px;
+  font-size: 1.2rem;
   font-weight: 700;
-  color: var(--color-text);
+  color: white;
+  transition: transform 0.3s ease;
+}
+
+.nav-logo:hover {
+  transform: scale(1.05);
 }
 
 .nav-logo span:first-child {
-  font-size: 2rem;
+  font-size: 1.8rem;
   display: inline-block;
 }
 
@@ -31,82 +37,82 @@
   display: flex;
   list-style: none;
   gap: 10px;
+  margin: 0;
+  padding: 0;
 }
 
 .nav-items li {
   position: relative;
 }
 
-.nav-items button {
-  background: none;
-  border: none;
-  color: var(--color-text);
-  font-size: 1rem;
-  font-weight: 500;
-  padding: 10px 20px;
-  cursor: pointer;
+.nav-button {
   display: flex;
   align-items: center;
   gap: 8px;
-  border-radius: 8px;
+  padding: 12px 20px;
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
   transition: all 0.3s ease;
+  border-radius: 12px;
   position: relative;
+  font-family: inherit;
 }
 
-.nav-items button:hover {
+.nav-items li.active .nav-button {
+  color: white;
   background: rgba(255, 255, 255, 0.1);
 }
 
-.nav-items button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.nav-items .active button {
-  background: rgba(52, 152, 219, 0.2);
-  color: var(--color-primary);
+.nav-button:hover {
+  color: white;
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .nav-icon {
-  font-size: 1.2rem;
+  font-size: 1.3rem;
+  line-height: 1;
 }
 
 .nav-label {
-  font-size: 0.95rem;
+  font-weight: 600;
 }
 
 .nav-underline {
   position: absolute;
-  bottom: -2px;
+  bottom: 0;
   left: 0;
   right: 0;
-  height: 2px;
-  background: var(--color-primary);
-  border-radius: 2px;
+  height: 3px;
+  background: linear-gradient(90deg, #3498db, #9b59b6);
+  border-radius: 3px 3px 0 0;
 }
 
 .nav-status {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 8px 16px;
+  padding: 8px 20px;
   background: rgba(255, 255, 255, 0.05);
   border-radius: 20px;
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .status-pulse {
-  width: 8px;
-  height: 8px;
-  background: var(--color-primary);
+  width: 10px;
+  height: 10px;
+  background: #2ecc71;
   border-radius: 50%;
+  box-shadow: 0 0 10px rgba(46, 204, 113, 0.5);
 }
 
 .status-text {
   font-size: 0.85rem;
   font-weight: 600;
-  color: var(--color-primary);
-  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.9);
   letter-spacing: 1px;
 }
 
@@ -114,30 +120,64 @@
 @media (max-width: 768px) {
   .navigation {
     padding: 15px 20px;
-    flex-direction: column;
+    flex-wrap: wrap;
     gap: 15px;
   }
 
-  .nav-items {
-    width: 100%;
-    justify-content: center;
-    flex-wrap: wrap;
+  .nav-logo {
+    font-size: 1rem;
   }
 
-  .nav-items button {
-    padding: 8px 12px;
-    font-size: 0.85rem;
-  }
-
-  .nav-label {
-    display: none;
-  }
-
-  .nav-icon {
+  .nav-logo span:first-child {
     font-size: 1.5rem;
   }
 
-  .nav-status {
+  .nav-items {
+    order: 3;
+    width: 100%;
+    justify-content: space-around;
+    gap: 5px;
+  }
+
+  .nav-button {
+    padding: 10px 15px;
+    font-size: 0.9rem;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .nav-label {
     font-size: 0.75rem;
+  }
+
+  .nav-status {
+    order: 2;
+    padding: 6px 15px;
+  }
+
+  .status-text {
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-logo span:last-child {
+    display: none;
+  }
+
+  .nav-items {
+    gap: 2px;
+  }
+
+  .nav-button {
+    padding: 8px 10px;
+  }
+
+  .nav-icon {
+    font-size: 1.2rem;
+  }
+
+  .nav-label {
+    font-size: 0.7rem;
   }
 }

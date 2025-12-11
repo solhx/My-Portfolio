@@ -1,8 +1,11 @@
-import { motion } from 'framer-motion'
-import { useState } from 'react'
+import { motion, useInView } from 'framer-motion'
+import { useState, useRef } from 'react'
 import './Sections.css'
 
 function ContactWorld() {
+  const ref = useRef(null)
+  const isInView = useInView(ref, { amount: 0.2, once: false })
+  
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -13,7 +16,6 @@ function ContactWorld() {
   const handleSubmit = (e) => {
     e.preventDefault()
     setIsSubmitting(true)
-    // Simulate form submission
     setTimeout(() => {
       setIsSubmitting(false)
       alert('Message sent! 🚀')
@@ -22,37 +24,61 @@ function ContactWorld() {
   }
 
   const contactMethods = [
-    { icon: '📧', label: 'Email', value: 'hossamhassan112003@gmail.com', link: 'mailto:hossamhassan112003@gmail.com' },
-    { icon: '💼', label: 'LinkedIn', value: 'linkedin.com/in/Hossam Hassan', link: 'https://www.linkedin.com/in/hossam-hassan-132055244/' },
-    { icon: '🐙', label: 'GitHub', value: 'github.com/Hossam Hassan', link: 'https://github.com/hossamhassan811' },
-   
+    { 
+      icon: '📧', 
+      label: 'Email', 
+      value: 'hossamhassan112003@gmail.com', 
+      link: 'mailto:hossamhassan112003@gmail.com' 
+    },
+    { 
+      icon: '💼', 
+      label: 'LinkedIn', 
+      value: 'linkedin.com/in/Hossam Hassan', 
+      link: 'https://www.linkedin.com/in/hossam-hassan-132055244/' 
+    },
+    { 
+      icon: '🐙', 
+      label: 'GitHub', 
+      value: 'github.com/Hossam Hassan', 
+      link: 'https://github.com/solhx' 
+    },
   ]
 
   return (
-    <motion.div
-      className="section-overlay contact-world"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.5 }}
+    <section
+      id="contact"
+      ref={ref}
+      className="section-full contact-world"
+      style={{ minHeight: '100vh' }}
     >
       <div className="content-wrapper">
         <motion.div
           className="contact-header"
           initial={{ y: -30, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.2 }}
+          animate={{ 
+            y: isInView ? 0 : -30, 
+            opacity: isInView ? 1 : 0 
+          }}
+          transition={{ duration: 0.6 }}
         >
           <h2>Let's Connect</h2>
           <p>Ready to start your next project? Let's make it happen together</p>
         </motion.div>
 
-        <div className="contact-content">
+        <motion.div 
+          className="contact-content"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: isInView ? 1 : 0 }}
+          transition={{ delay: 0.2, duration: 0.6 }}
+        >
           <motion.div
             className="contact-info"
             initial={{ x: -50, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ delay: 0.4 }}
+            animate={{ 
+              x: isInView ? 0 : -50, 
+              opacity: isInView ? 1 : 0 
+            }}
+            transition={{ delay: 0.3, duration: 0.6 }}
           >
             <h3>Get in Touch</h3>
             <p className="contact-description">
@@ -65,11 +91,17 @@ function ContactWorld() {
                 <motion.a
                   key={method.label}
                   href={method.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="contact-method"
                   initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.5 + index * 0.1 }}
+                  animate={{ 
+                    opacity: isInView ? 1 : 0, 
+                    x: isInView ? 0 : -20 
+                  }}
+                  transition={{ delay: 0.4 + index * 0.1, duration: 0.5 }}
                   whileHover={{ x: 10, scale: 1.05 }}
+                  whileTap={{ scale: 0.98 }}
                 >
                   <span className="method-icon">{method.icon}</span>
                   <div className="method-info">
@@ -82,9 +114,12 @@ function ContactWorld() {
 
             <motion.div
               className="availability"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.9 }}
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ 
+                opacity: isInView ? 1 : 0,
+                scale: isInView ? 1 : 0.9
+              }}
+              transition={{ delay: 0.7, duration: 0.5 }}
             >
               <div className="status-indicator">
                 <motion.div
@@ -101,15 +136,13 @@ function ContactWorld() {
             className="contact-form"
             onSubmit={handleSubmit}
             initial={{ x: 50, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ delay: 0.4 }}
+            animate={{ 
+              x: isInView ? 0 : 50, 
+              opacity: isInView ? 1 : 0 
+            }}
+            transition={{ delay: 0.4, duration: 0.6 }}
           >
-            <motion.div
-              className="form-group"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6 }}
-            >
+            <div className="form-group">
               <label htmlFor="name">Name</label>
               <input
                 type="text"
@@ -119,14 +152,9 @@ function ContactWorld() {
                 required
                 placeholder="Your name"
               />
-            </motion.div>
+            </div>
 
-            <motion.div
-              className="form-group"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.7 }}
-            >
+            <div className="form-group">
               <label htmlFor="email">Email</label>
               <input
                 type="email"
@@ -136,14 +164,9 @@ function ContactWorld() {
                 required
                 placeholder="your.email@example.com"
               />
-            </motion.div>
+            </div>
 
-            <motion.div
-              className="form-group"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.8 }}
-            >
+            <div className="form-group">
               <label htmlFor="message">Message</label>
               <textarea
                 id="message"
@@ -153,33 +176,19 @@ function ContactWorld() {
                 placeholder="Tell me about your project..."
                 rows="5"
               />
-            </motion.div>
+            </div>
 
-            <motion.button
+            <button
               type="submit"
               className="submit-button"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.9 }}
-              whileHover={{ scale: 1.05, boxShadow: '0 0 30px rgba(155, 89, 182, 0.5)' }}
-              whileTap={{ scale: 0.95 }}
               disabled={isSubmitting}
             >
-              {isSubmitting ? (
-                <motion.span
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
-                >
-                  ⏳
-                </motion.span>
-              ) : (
-                <>Send Message 🚀</>
-              )}
-            </motion.button>
+              {isSubmitting ? '⏳ Sending...' : 'Send Message 🚀'}
+            </button>
           </motion.form>
-        </div>
+        </motion.div>
       </div>
-    </motion.div>
+    </section>
   )
 }
 

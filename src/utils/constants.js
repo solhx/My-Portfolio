@@ -12,19 +12,19 @@ export const CAMERA_CONFIGS = {
     fov: 50,
   },
   about: {
-    position: [0, 0, 1],
-    target: [0, 0, 0],
-    fov: 65,
-  },
-  projects: {
-    position: [0, 0, 0.5],
-    target: [0, 0, 0],
-    fov: 75,
-  },
-  contact: {
-    position: [0, 0, 1.2],
+    position: [0, 0, 4],
     target: [0, 0, 0],
     fov: 60,
+  },
+  projects: {
+    position: [0, 0, 1.5],
+    target: [0, 0, 0],
+    fov: 70,
+  },
+  contact: {
+    position: [0, 0, 3],
+    target: [0, 0, 0],
+    fov: 65,
   },
 }
 

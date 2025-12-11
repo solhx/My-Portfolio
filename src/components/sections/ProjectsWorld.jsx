@@ -1,15 +1,15 @@
-import { motion, AnimatePresence } from 'framer-motion'
-import { useState, useEffect } from 'react'
+import { motion, AnimatePresence, useInView } from 'framer-motion'
+import { useState, useEffect, useRef } from 'react'
 import './Sections.css'
 
 function ProjectsWorld() {
+  const ref = useRef(null)
+  const isInView = useInView(ref, { amount: 0.2, once: false })
   const [selectedProject, setSelectedProject] = useState(null)
 
-  // Prevent body scroll and hide navbar when modal is open
   useEffect(() => {
     if (selectedProject) {
       document.body.style.overflow = 'hidden'
-      // Hide navigation
       const navigation = document.querySelector('.navigation')
       if (navigation) {
         navigation.style.opacity = '0'
@@ -17,7 +17,6 @@ function ProjectsWorld() {
       }
     } else {
       document.body.style.overflow = ''
-      // Show navigation
       const navigation = document.querySelector('.navigation')
       if (navigation) {
         navigation.style.opacity = '1'
@@ -59,7 +58,7 @@ function ProjectsWorld() {
       id: 3,
       title: 'ToDo list',
       category: 'Task Management',
-      description: ' A modern, responsive Todo app with a clean, gradient UI built using Material-UI. Users can add, edit, delete, and filter tasks by status, with data saved in local storage. Smooth animations and hover effects enhance the user experience.',
+      description: 'A modern, responsive Todo app with a clean, gradient UI built using Material-UI.',
       tech: ['React 19', 'React Router', 'Material-UI', 'local storage'],
       color: '#f31c12',
       icon: '✅',
@@ -68,20 +67,34 @@ function ProjectsWorld() {
     },
   ]
 
+  const modalVariants = {
+    hidden: { opacity: 0, scale: 0.8, y: 50 },
+    visible: { 
+      opacity: 1, scale: 1, y: 0,
+      transition: { type: 'spring', stiffness: 300, damping: 30 }
+    },
+    exit: { 
+      opacity: 0, scale: 0.8, y: 50,
+      transition: { duration: 0.2 }
+    }
+  }
+
   return (
-    <motion.div
-      className="section-overlay projects-world"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.3 }}
+    <section
+      id="projects"
+      ref={ref}
+      className="section-full projects-world"
+      style={{ minHeight: '100vh' }}
     >
       <div className="content-wrapper">
         <motion.div
           className="projects-header"
           initial={{ y: -30, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.1, duration: 0.3 }}
+          animate={{ 
+            y: isInView ? 0 : -30, 
+            opacity: isInView ? 1 : 0 
+          }}
+          transition={{ duration: 0.6 }}
         >
           <h2>Featured Projects</h2>
           <p>Explore my latest work and creative experiments</p>
@@ -90,31 +103,45 @@ function ProjectsWorld() {
         <motion.div
           className="projects-grid"
           initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.2, duration: 0.3 }}
+          animate={{ opacity: isInView ? 1 : 0 }}
+          transition={{ delay: 0.2, duration: 0.6 }}
         >
           {projects.map((project, index) => (
-            <div
+            <motion.div
               key={project.id}
               className="project-card"
               onClick={() => setSelectedProject(project)}
               style={{ '--project-color': project.color }}
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ 
+                opacity: isInView ? 1 : 0,
+                y: isInView ? 0 : 50
+              }}
+              transition={{ 
+                delay: index * 0.15, 
+                duration: 0.5,
+                type: 'spring',
+                stiffness: 100
+              }}
+              whileHover={{ scale: 1.05, y: -10 }}
+              whileTap={{ scale: 0.98 }}
             >
-              <div className="project-icon">{project.icon}</div>
+              <motion.div 
+                className="project-icon"
+                whileHover={{ rotate: [0, -10, 10, 0], scale: 1.2 }}
+              >
+                {project.icon}
+              </motion.div>
               <div className="project-category">{project.category}</div>
               <h3>{project.title}</h3>
               <p>{project.description}</p>
               <div className="project-tech">
                 {project.tech.map((tech) => (
-                  <span key={tech} className="tech-tag">
-                    {tech}
-                  </span>
+                  <span key={tech} className="tech-tag">{tech}</span>
                 ))}
               </div>
-              <div className="project-link">
-                View Project →
-              </div>
-            </div>
+              <div className="project-link">View Project →</div>
+            </motion.div>
           ))}
         </motion.div>
       </div>
@@ -126,41 +153,39 @@ function ProjectsWorld() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.1 }}
             onClick={() => setSelectedProject(null)}
           >
             <motion.div
               className="modal-content"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.1 }}
+              variants={modalVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
               onClick={(e) => e.stopPropagation()}
             >
               <button 
                 className="modal-close" 
                 onClick={() => setSelectedProject(null)}
-                aria-label="Close modal"
               >
                 ×
               </button>
+              
               <div className="modal-icon">{selectedProject.icon}</div>
               <h2>{selectedProject.title}</h2>
               <p className="modal-category">{selectedProject.category}</p>
               <p className="modal-description">{selectedProject.description}</p>
+              
               <div className="modal-tech">
                 {selectedProject.tech.map((tech) => (
                   <span key={tech} className="tech-tag">{tech}</span>
                 ))}
               </div>
+              
               <div className="modal-actions">
                 {selectedProject.liveDemo && (
                   <button
                     className="btn-primary"
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      window.open(selectedProject.liveDemo, '_blank', 'noopener,noreferrer')
-                    }}
+                    onClick={() => window.open(selectedProject.liveDemo, '_blank')}
                   >
                     Live Demo
                   </button>
@@ -168,10 +193,7 @@ function ProjectsWorld() {
                 {selectedProject.github && (
                   <button 
                     className="btn-secondary"
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      window.open(selectedProject.github, '_blank', 'noopener,noreferrer')
-                    }}
+                    onClick={() => window.open(selectedProject.github, '_blank')}
                   >
                     GitHub
                   </button>
@@ -181,7 +203,7 @@ function ProjectsWorld() {
           </motion.div>
         )}
       </AnimatePresence>
-    </motion.div>
+    </section>
   )
 }
 
