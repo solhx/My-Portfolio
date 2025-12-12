@@ -1,5 +1,5 @@
 import { Canvas } from '@react-three/fiber'
-import { Suspense, useEffect, useState } from 'react'
+import { Suspense, useEffect, useState, useMemo } from 'react'
 import { AnimatePresence } from 'framer-motion'
 import Scene from './components/Scene'
 import Navigation from './components/Navigation'
@@ -21,10 +21,19 @@ function App() {
   const { loadingProgress, isLoaded } = useAssetLoader()
 
   const [scrollProgress, setScrollProgress] = useState(0)
-  const [showDebug, setShowDebug] = useState(true) // Toggle debug
-  const [cameraZ, setCameraZ] = useState(8)
 
-  // Update loading screen
+  // 🎯 DETECT MOBILE DEVICE
+  const isMobile = useMemo(() => {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) 
+           || window.innerWidth < 768;
+  }, []);
+
+  // 🎯 ADAPTIVE DPR (Device Pixel Ratio)
+  const canvasDpr = useMemo(() => {
+    if (isMobile) return [0.5, 1]; // Lower quality on mobile
+    return [1, 2]; // High quality on desktop
+  }, [isMobile]);
+
   useEffect(() => {
     if (isLoaded && isLoading) {
       const timer = setTimeout(() => {
@@ -34,68 +43,60 @@ function App() {
     }
   }, [isLoaded, isLoading, setIsLoading])
 
-  // Enhanced scroll detection
+  // 🎯 OPTIMIZED SCROLL HANDLER
   useEffect(() => {
-    if (isLoading) return
+  if (isLoading) return
 
-    const handleScroll = () => {
-      const scrollHeight = document.documentElement.scrollHeight - window.innerHeight
-      const scrolled = window.scrollY
-      const progress = scrollHeight > 0 ? Math.min(Math.max(scrolled / scrollHeight, 0), 1) : 0
-      
-      setScrollProgress(progress)
+  let ticking = false;
 
-      
+  const handleScroll = () => {
+    if (!ticking) {
+      window.requestAnimationFrame(() => {
+        const scrollHeight = document.documentElement.scrollHeight - window.innerHeight
+        const scrolled = window.scrollY
+        const progress = scrollHeight > 0 ? Math.min(Math.max(scrolled / scrollHeight, 0), 1) : 0
+        
+        setScrollProgress(progress)
 
-      // Calculate camera Z
-      const cameraConfigs = [8, 4, 1.5, 3]
-      const sectionProgress = progress * (cameraConfigs.length - 1)
-      const idx1 = Math.floor(sectionProgress)
-      const idx2 = Math.min(idx1 + 1, cameraConfigs.length - 1)
-      const blend = sectionProgress - idx1
-      
-      const interpolatedZ = cameraConfigs[idx1] + (cameraConfigs[idx2] - cameraConfigs[idx1]) * blend
-      setCameraZ(interpolatedZ)
+        // 🎯 IMPROVED: Use actual section positions
+        const sections = ['home', 'about', 'projects', 'contact'];
+        let detectedSection = 'home';
 
-      // Determine section
-      let detectedSection = 'home'
-      if (progress > 0.75) detectedSection = 'contact'
-      else if (progress > 0.5) detectedSection = 'projects'
-      else if (progress > 0.25) detectedSection = 'about'
+        // Check each section's position
+        for (let i = sections.length - 1; i >= 0; i--) {
+          const element = document.getElementById(sections[i]);
+          if (element) {
+            const rect = element.getBoundingClientRect();
+            // If section is in viewport (with 200px threshold)
+            if (rect.top <= 200) {
+              detectedSection = sections[i];
+              break;
+            }
+          }
+        }
 
-      if (currentSection !== detectedSection) {
-       
-        setCurrentSection(detectedSection)
-      }
+        if (currentSection !== detectedSection) {
+          setCurrentSection(detectedSection)
+        }
+
+        ticking = false;
+      });
+
+      ticking = true;
     }
+  }
 
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    document.addEventListener('scroll', handleScroll, { passive: true })
-    handleScroll()
+  window.addEventListener('scroll', handleScroll, { passive: true })
+  handleScroll()
 
-    const interval = setInterval(handleScroll, 100)
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll)
-      document.removeEventListener('scroll', handleScroll)
-      clearInterval(interval)
-    }
-  }, [isLoading, setCurrentSection, currentSection])
-
-  // Keyboard toggle debug
-  useEffect(() => {
-    const handleKeyPress = (e) => {
-      if (e.key === 'd' || e.key === 'D') {
-        setShowDebug(prev => !prev)
-      }
-    }
-    window.addEventListener('keydown', handleKeyPress)
-    return () => window.removeEventListener('keydown', handleKeyPress)
-  }, [])
-
+  return () => {
+    window.removeEventListener('scroll', handleScroll)
+  }
+}, [isLoading, setCurrentSection, currentSection])
   return (
     <div className="app">
-      <CustomCursor />
+      {/* 🎯 DISABLE CUSTOM CURSOR ON MOBILE */}
+      {!isMobile && <CustomCursor />}
       
       <AnimatePresence mode="wait">
         {isLoading && <LoadingScreen key="loading" loadingProgress={loadingProgress} />}
@@ -107,13 +108,15 @@ function App() {
 
           <div className="canvas-container">
             <Canvas
-              dpr={[1, 2]}
+              dpr={canvasDpr}
               gl={{
-                antialias: true,
+                antialias: !isMobile,
                 alpha: false,
                 powerPreference: 'high-performance',
+                stencil: false,
               }}
-              camera={{ position: [0, 0, 8], fov: 50 }}
+              camera={{ position: [0, 0, 8], fov: isMobile ? 60 : 50 }}
+              performance={{ min: 0.5 }}
             >
               <Suspense fallback={null}>
                 <Scene />
@@ -145,8 +148,8 @@ function App() {
             }`
           }} />
 
-          {/* Scroll Hint */}
-          {currentSection === 'home' && (
+          {/* Scroll Hint - Hide on mobile */}
+          {currentSection === 'home' && !isMobile && (
             <div style={{
               position: 'fixed',
               bottom: '40px',
@@ -162,7 +165,7 @@ function App() {
               textShadow: '0 0 10px rgba(52, 152, 219, 0.8)'
             }}>
               <div style={{ fontSize: '32px', marginBottom: '8px' }}>↓</div>
-            
+              Scroll to explore
             </div>
           )}
         </>

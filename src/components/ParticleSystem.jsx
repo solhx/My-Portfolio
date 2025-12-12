@@ -1,31 +1,49 @@
-import { useRef, useMemo } from "react";
+import { useRef, useMemo, useEffect } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import useStore from "../store/useStore";
 
 function ParticleSystem() {
-  const pointsRef = useRef();
+  const meshRef = useRef();
   const glowRef = useRef();
   const currentSection = useStore((state) => state.currentSection);
-  const particleCount = 1200;
+  
+  // 🎯 RESPONSIVE PARTICLE COUNT
+  const particleCount = useMemo(() => {
+    const width = window.innerWidth;
+    if (width < 768) return 200;
+    if (width < 1024) return 500;
+    return 1200;
+  }, []);
 
-  // Generate particle positions
-  const particles = useMemo(() => {
+  const { positions, dummy } = useMemo(() => {
     const positions = new Float32Array(particleCount * 3);
-    const speeds = new Float32Array(particleCount);
+    const dummy = new THREE.Object3D();
 
     for (let i = 0; i < particleCount; i++) {
       positions[i * 3] = (Math.random() - 0.5) * 25;
       positions[i * 3 + 1] = (Math.random() - 0.5) * 25;
       positions[i * 3 + 2] = (Math.random() - 0.5) * 25;
-
-      speeds[i] = 0.002 + Math.random() * 0.003; // drifting effect
     }
 
-    return { positions, speeds };
-  }, []);
+    return { positions, dummy };
+  }, [particleCount]);
 
-  // Smooth color transitions
+  useEffect(() => {
+    if (!meshRef.current) return;
+    
+    for (let i = 0; i < particleCount; i++) {
+      dummy.position.set(
+        positions[i * 3],
+        positions[i * 3 + 1],
+        positions[i * 3 + 2]
+      );
+      dummy.updateMatrix();
+      meshRef.current.setMatrixAt(i, dummy.matrix);
+    }
+    meshRef.current.instanceMatrix.needsUpdate = true;
+  }, [particleCount, positions, dummy]);
+
   const colors = {
     home: "#4da3ff",
     about: "#ff6b6b",
@@ -33,31 +51,30 @@ function ParticleSystem() {
     contact: "#c77dff",
   };
 
-  const targetColor = new THREE.Color(colors[currentSection] || "#4da3ff");
+  const targetColor = useMemo(
+    () => new THREE.Color(colors[currentSection] || "#4da3ff"),
+    [currentSection]
+  );
 
   useFrame((state) => {
     const t = state.clock.elapsedTime;
 
-    // Rotation movement
-    if (pointsRef.current) {
-      pointsRef.current.rotation.y = t * 0.05;
-      pointsRef.current.rotation.x = t * 0.02;
+    if (meshRef.current) {
+      meshRef.current.rotation.y = t * 0.05;
+      meshRef.current.rotation.x = t * 0.02;
     }
 
-    // Glow pulsing effect
     if (glowRef.current) {
       glowRef.current.material.opacity = 0.3 + Math.sin(t * 2) * 0.15;
     }
 
-    // Color lerp
-    if (pointsRef.current?.material) {
-      pointsRef.current.material.color.lerp(targetColor, 0.05);
+    if (meshRef.current?.material) {
+      meshRef.current.material.color.lerp(targetColor, 0.05);
     }
   });
 
   return (
     <group>
-      {/* GLOW SPHERE */}
       <mesh ref={glowRef}>
         <sphereGeometry args={[10, 32, 32]} />
         <meshBasicMaterial
@@ -69,26 +86,15 @@ function ParticleSystem() {
         />
       </mesh>
 
-      {/* PARTICLES */}
-      <points ref={pointsRef}>
-        <bufferGeometry>
-          <bufferAttribute
-            attach="attributes-position"
-            array={particles.positions}
-            count={particleCount}
-            itemSize={3}
-          />
-        </bufferGeometry>
-
-        <pointsMaterial
-          size={0.06}
+      <instancedMesh ref={meshRef} args={[null, null, particleCount]}>
+        <sphereGeometry args={[0.06, 8, 8]} />
+        <meshBasicMaterial
           transparent
           opacity={0.75}
-          sizeAttenuation
           depthWrite={false}
           blending={THREE.AdditiveBlending}
         />
-      </points>
+      </instancedMesh>
     </group>
   );
 }

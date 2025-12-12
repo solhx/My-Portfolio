@@ -1,15 +1,19 @@
 import { motion, useInView } from 'framer-motion'
-import { useRef } from 'react'
+import { useRef, useMemo } from 'react'
 import './Sections.css'
 
 function HomeWorld() {
   const ref = useRef(null)
   const isInView = useInView(ref, { amount: 0.3, once: false })
 
+  const isMobile = useMemo(() => {
+    return window.innerWidth < 768
+  }, [])
+
   const downloadResume = () => {
     const link = document.createElement('a')
     link.href = '/my resume/Hossam_Hassan_CV.pdf'
-    link.download = 'Hossam Hassan CV.pdf'
+    link.download = 'Hossam_Hassan_CV.pdf'
     document.body.appendChild(link)
     link.click()
     document.body.removeChild(link)
@@ -27,16 +31,7 @@ function HomeWorld() {
       id="home"
       ref={ref}
       className="section-full home-world"
-      style={{ height: '100vh' }}
     >
-      <motion.div
-        className="scroll-hint"
-        animate={{ y: [0, 10, 0] }}
-        transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
-      >
-       
-      </motion.div>
-
       <div className="content-wrapper-home">
         <motion.div
           className="hero-content"
@@ -97,29 +92,31 @@ function HomeWorld() {
           </motion.div>
         </motion.div>
 
-        <div className="floating-elements">
-          {[...Array(8)].map((_, i) => (
-            <motion.div
-              key={i}
-              className="float-orb"
-              initial={{ opacity: 0 }}
-              animate={{
-                opacity: isInView ? [0.3, 0.7, 0.3] : 0,
-                y: [0, -30, 0],
-                x: [0, Math.random() * 20 - 10, 0],
-              }}
-              transition={{
-                duration: 3 + i,
-                repeat: Infinity,
-                delay: i * 0.3,
-              }}
-              style={{
-                left: `${Math.min(20 + i * 12, 80)}%`,
-                bottom: `${10 + i * 8}%`,
-              }}
-            />
-          ))}
-        </div>
+        {!isMobile && (
+          <div className="floating-elements">
+            {[...Array(8)].map((_, i) => (
+              <motion.div
+                key={i}
+                className="float-orb"
+                initial={{ opacity: 0 }}
+                animate={{
+                  opacity: isInView ? [0.3, 0.7, 0.3] : 0,
+                  y: [0, -30, 0],
+                  x: [0, Math.random() * 20 - 10, 0],
+                }}
+                transition={{
+                  duration: 3 + i,
+                  repeat: Infinity,
+                  delay: i * 0.3,
+                }}
+                style={{
+                  left: `${Math.min(20 + i * 12, 80)}%`,
+                  bottom: `${10 + i * 8}%`,
+                }}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </section>
   )

@@ -16,10 +16,12 @@
   --color-text-secondary: #a0a0a0;
 }
 
+/* iOS Safari 100vh fix */
 html {
   scroll-behavior: smooth;
   overflow-x: hidden;
-  overflow-y: auto; /* CRITICAL! */
+  overflow-y: auto;
+  height: -webkit-fill-available;
 }
 
 body {
@@ -31,14 +33,15 @@ body {
   background: var(--color-dark);
   color: var(--color-text);
   overflow-x: hidden;
-  overflow-y: auto; /* CRITICAL! */
+  overflow-y: auto;
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
 }
 
 .app {
   width: 100vw;
   min-height: 100vh;
   position: relative;
-  /* DO NOT SET OVERFLOW HERE! */
 }
 
 .canvas-container {
@@ -55,7 +58,6 @@ body {
   position: relative;
   z-index: 10;
   width: 100%;
-  /* DO NOT SET OVERFLOW HERE EITHER! */
 }
 
 .section-full {
@@ -65,7 +67,14 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 80px 20px 20px; /* Top padding for navigation */
+  padding: 0;
+}
+
+/* iOS specific fixes */
+@supports (-webkit-touch-callout: none) {
+  .section-full {
+    min-height: -webkit-fill-available;
+  }
 }
 
 /* Scrollbar */
@@ -86,8 +95,44 @@ body {
   background: linear-gradient(180deg, #2980b9, #8e44ad);
 }
 
-/* Selection */
 ::selection {
   background: var(--color-primary);
   color: white;
+}
+
+/* Performance optimizations */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+/* ABSOLUTE MOBILE CENTERING - FORCE OVERRIDE */
+@media (max-width: 768px) {
+  #home {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    height: 100vh !important;
+    min-height: 100vh !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  #home .content-wrapper-home {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 20px !important;
+    height: auto !important;
+  }
+
+  #home .hero-content {
+    display: block !important;
+    width: 100% !important;
+    text-align: center !important;
+  }
 }

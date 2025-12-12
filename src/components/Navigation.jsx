@@ -16,7 +16,14 @@ function Navigation() {
   const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId)
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      const navHeight = 80; // Height of your fixed navigation
+      const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+      const offsetPosition = sectionId === 'home' ? elementPosition : elementPosition - navHeight;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
     }
   }
 
@@ -32,7 +39,6 @@ function Navigation() {
         onClick={() => scrollToSection('home')}
         style={{ cursor: 'pointer' }}
       >
-      
         <span>Hossam Hassan</span>
       </div>
 
