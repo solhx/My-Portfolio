@@ -1103,3 +1103,75 @@ body {
     font-size: 1rem;
   }
 }
+/* ========================================
+   IPHONE 13 PRO SPECIFIC FIX (390x844)
+   ======================================== */
+
+@media only screen 
+  and (device-width: 390px) 
+  and (device-height: 844px) 
+  and (-webkit-device-pixel-ratio: 3) {
+  
+  /* Prevent About content from disappearing */
+  .about-world .about-content {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+  }
+
+  .about-header,
+  .about-main-grid,
+  .about-left-column,
+  .about-right-column,
+  .about-stats-section {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateY(0) !important;
+  }
+
+  /* Force content to stay visible */
+  .about-header h2,
+  .about-bio,
+  .skills-section,
+  .skill-item,
+  .stat {
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+
+  /* Disable problematic animations on iPhone 13 Pro */
+  .about-world .about-content * {
+    animation: none !important;
+  }
+
+  /* Ensure proper stacking */
+  .about-world {
+    z-index: 10 !important;
+  }
+
+  .about-world .about-content {
+    z-index: 11 !important;
+    position: relative;
+  }
+
+  /* Fix viewport issues */
+  #about.section-full {
+    min-height: auto !important;
+    height: auto !important;
+  }
+}
+
+/* Fallback for all iOS devices - prevent content disappearing */
+@supports (-webkit-touch-callout: none) {
+  @media (max-width: 428px) {
+    .about-world .about-content {
+      will-change: auto !important;
+    }
+
+    /* Disable transforms that might cause disappearing */
+    .about-world .about-content > * {
+      backface-visibility: visible !important;
+      -webkit-backface-visibility: visible !important;
+    }
+  }
+}
