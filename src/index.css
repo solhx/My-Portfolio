@@ -44,14 +44,21 @@ body {
   position: relative;
 }
 
+/* CRITICAL: Canvas must be behind modals */
 .canvas-container {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 1;
+  z-index: 1 !important; /* Lower than modal */
   pointer-events: none;
+  touch-action: none;
+}
+
+/* Ensure modals are above everything */
+.project-modal-overlay {
+  z-index: 999999 !important;
 }
 
 .scroll-container {
@@ -134,5 +141,33 @@ body {
     display: block !important;
     width: 100% !important;
     text-align: center !important;
+  }
+}
+/* CRITICAL: Hide default cursor globally */
+*, *::before, *::after {
+  cursor: none !important;
+}
+
+html {
+  cursor: none !important;
+}
+
+body {
+  cursor: none !important;
+}
+
+a, a:hover, a:active, a:visited {
+  cursor: none !important;
+}
+
+button, button:hover, button:active {
+  cursor: none !important;
+}
+
+/* Show on mobile */
+@media (max-width: 768px) {
+  *, *::before, *::after,
+  html, body, a, button {
+    cursor: auto !important;
   }
 }

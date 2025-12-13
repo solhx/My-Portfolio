@@ -159,13 +159,13 @@ function AboutWorld() {
               <div className="about-bio">
                 <h3>Hello! I'm Hossam Hassan 👋</h3>
                 <p>
-                  A <strong>Junior MERN Stack Developer</strong> with hands-on experience building full-stack web applications using
-                  <strong> MongoDB, Express.js, React, and Node.js</strong>.
+                  A <strong className="gradient-text">Junior MERN Stack Developer</strong> with hands-on experience building full-stack web applications using
+                  <strong className="gradient-text"> MongoDB, Express.js, React, and Node.js</strong>.
                   Skilled in creating scalable backend APIs, secure server-side logic, and responsive front-end interfaces.
                 </p>
                 <p>
                   Previously worked as a Front-End Developer, delivering optimized and accessible user experiences with
-                  <strong> React and Next.js</strong>. Strong ability to translate UI/UX designs into clean, maintainable code and collaborate effectively within agile development teams.
+                  <strong className="gradient-text"> React and Next.js</strong>. Strong ability to translate UI/UX designs into clean, maintainable code and collaborate effectively within agile development teams.
                 </p>
                 <p>
                   Passionate about building modern web applications, writing efficient code, and continuously improving my development workflow.

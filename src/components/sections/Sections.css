@@ -1175,3 +1175,203 @@ body {
     }
   }
 }
+
+
+/* ========================================
+   PROJECT MODAL - FIXED Z-INDEX
+   ======================================== */
+
+.project-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.95);
+  z-index: 999999 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  pointer-events: auto !important;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  will-change: opacity;
+  /* CRITICAL: Create new stacking context */
+  isolation: isolate;
+}
+
+.project-modal-overlay .modal-content {
+  background: #1a1a2e;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 30px;
+  padding: 60px;
+  max-width: 700px;
+  width: 100%;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9);
+  pointer-events: auto !important;
+  z-index: 1000000 !important;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  will-change: transform;
+  isolation: isolate;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.modal-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: white;
+  font-size: 2rem;
+  line-height: 1;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.1s ease, transform 0.1s ease;
+  pointer-events: auto !important;
+  z-index: 1000001 !important;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.modal-close:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.modal-close:active {
+  transform: scale(0.9) translateZ(0);
+}
+
+.modal-icon {
+  font-size: 4rem;
+  text-align: center;
+  margin-bottom: 20px;
+  line-height: 1;
+}
+
+.modal-content h2 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.modal-category {
+  text-align: center;
+  color: #f39c12;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 30px;
+  font-size: 0.9rem;
+}
+
+.modal-description {
+  color: var(--color-text-secondary);
+  line-height: 1.8;
+  margin-bottom: 30px;
+  text-align: center;
+  font-size: 1.1rem;
+}
+
+.modal-tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 40px;
+}
+
+.modal-tech .tech-tag {
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  font-size: 0.9rem;
+  color: var(--color-text);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.modal-actions {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn-primary,
+.btn-secondary {
+  padding: 15px 40px;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: transform 0.1s ease, background-color 0.1s ease;
+  border: none;
+  font-family: inherit;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #f39c12, #d68910);
+  color: white;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px) translateZ(0);
+}
+
+.btn-primary:active {
+  transform: translateY(0) translateZ(0);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: white;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: translateY(-2px) translateZ(0);
+}
+
+.btn-secondary:active {
+  transform: translateY(0) translateZ(0);
+}
+
+@media (max-width: 768px) {
+  .modal-content {
+    padding: 40px 30px;
+    max-width: 90vw;
+  }
+
+  .modal-content h2 {
+    font-size: 2rem;
+  }
+
+  .modal-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    width: 100%;
+    justify-content: center;
+  }
+}

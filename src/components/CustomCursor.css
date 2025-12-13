@@ -6,7 +6,7 @@
   height: 32px;
   border-radius: 50%;
   pointer-events: none;
-  z-index: 9999;
+  z-index: 10000000 !important;
   transform: translate(-50%, -50%);
 }
 
@@ -19,7 +19,7 @@
   background: rgba(52, 152, 219, 1);
   border-radius: 50%;
   pointer-events: none;
-  z-index: 10000;
+  z-index: 10000001 !important;
   transform: translate(-50%, -50%);
   box-shadow: 0 0 10px rgba(52, 152, 219, 0.8);
 }
@@ -33,41 +33,136 @@
   border: 1px solid rgba(52, 152, 219, 0.3);
   border-radius: 50%;
   pointer-events: none;
-  z-index: 9998;
+  z-index: 9999999 !important;
   transform: translate(-50%, -50%);
 }
 
-/* Hide default cursor */
-body {
-  cursor: none;
-}
+/* ========================================
+   HIDE DEFAULT CURSOR EVERYWHERE
+   ======================================== */
 
-button,
-a,
-input,
-textarea,
-.clickable,
-.project-card,
-li,
-.stat,
-.info-card,
-.skill-item {
+/* Global cursor hide */
+* {
   cursor: none !important;
 }
 
-/* Mobile - show default cursor */
-@media (max-width: 768px), (hover: none) {
+html,
+body,
+body *,
+div,
+span,
+p,
+h1, h2, h3, h4, h5, h6,
+a,
+button,
+input,
+textarea,
+select,
+label,
+nav,
+section,
+article,
+header,
+footer {
+  cursor: none !important;
+}
+
+/* Specific interactive elements */
+button,
+a,
+a *,
+button *,
+input,
+textarea,
+select,
+.clickable,
+.project-card,
+.project-card *,
+li,
+.stat,
+.stat *,
+.info-card,
+.info-card *,
+.skill-item,
+.skill-item *,
+.cta-button,
+.cta-button *,
+.nav-button,
+.nav-button *,
+.contact-method,
+.contact-method * {
+  cursor: none !important;
+}
+
+/* ========================================
+   MODAL SPECIFIC - CRITICAL FIX
+   ======================================== */
+
+.project-modal-overlay,
+.project-modal-overlay *,
+.modal-content,
+.modal-content *,
+.modal-close,
+.modal-close *,
+.btn-primary,
+.btn-primary *,
+.btn-secondary,
+.btn-secondary *,
+.modal-actions,
+.modal-actions *,
+.modal-actions a,
+.modal-actions a *,
+.modal-actions button,
+.modal-actions button * {
+  cursor: none !important;
+}
+
+/* Force on all anchor tags inside modal */
+.project-modal-overlay a {
+  cursor: none !important;
+}
+
+.project-modal-overlay a:hover {
+  cursor: none !important;
+}
+
+.project-modal-overlay a:active {
+  cursor: none !important;
+}
+
+/* Force on all buttons inside modal */
+.project-modal-overlay button {
+  cursor: none !important;
+}
+
+.project-modal-overlay button:hover {
+  cursor: none !important;
+}
+
+.project-modal-overlay button:active {
+  cursor: none !important;
+}
+
+/* ========================================
+   MOBILE - SHOW DEFAULT CURSOR
+   ======================================== */
+
+@media (max-width: 768px), (hover: none), (pointer: coarse) {
   .custom-cursor,
   .cursor-dot,
   .cursor-trail {
-    display: none;
+    display: none !important;
   }
 
+  *,
+  html,
   body,
-  button,
+  body *,
   a,
+  button,
   input,
-  textarea {
+  textarea,
+  select {
     cursor: auto !important;
   }
 }
