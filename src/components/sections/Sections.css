@@ -539,17 +539,26 @@ body {
   height: 100%;
   border-radius: 10px;
   position: relative;
-  animation: progressBar 0.8s ease forwards;
-  transform-origin: left;
-  transform: scaleX(0);
+  transform-origin: left; /* ✅ Keep this */
+  /* ✅ Let Framer Motion handle all animations */
+  will-change: transform; /* ✅ GPU acceleration */
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
-@keyframes progressBar {
-  to {
-    transform: scaleX(1);
+/* ✅ iOS Safari specific fix for progress bars */
+@supports (-webkit-touch-callout: none) {
+  .skill-bar {
+    overflow: hidden;
+    position: relative;
+    isolation: isolate; /* ✅ Create stacking context */
+  }
+  
+  .skill-progress {
+    -webkit-transform: translateZ(0); /* ✅ Force GPU layer */
+    transform: translateZ(0);
   }
 }
-
 .about-stats-section {
   background: rgba(231, 76, 60, 0.05);
   border-radius: 20px;
@@ -1306,8 +1315,11 @@ body {
 .modal-actions {
   display: flex;
   gap: 20px;
-  justify-content: center;
+  justify-content: center; /* ✅ Already there */
+  align-items: center; /* ✅ Add this */
   flex-wrap: wrap;
+  width: 100%; /* ✅ Add this */
+  margin: 0 auto; /* ✅ Add this */
 }
 
 .btn-primary,
@@ -1323,8 +1335,18 @@ body {
   transform: translateZ(0);
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
+  text-decoration: none; /* ✅ Remove underlines */
+  text-align: center; /* ✅ Center text */
+  display: inline-flex; /* ✅ Better centering */
+  align-items: center; /* ✅ Vertical centering */
+  justify-content: center; /* ✅ Horizontal centering */
+  min-width: 150px; /* ✅ Consistent width */
 }
-
+.btn-primary a,
+.btn-secondary a {
+  text-decoration: none;
+  color: inherit;
+}
 .btn-primary {
   background: linear-gradient(135deg, #f39c12, #d68910);
   color: white;
@@ -1337,7 +1359,6 @@ body {
 .btn-primary:active {
   transform: translateY(0) translateZ(0);
 }
-
 .btn-secondary {
   background: transparent;
   color: white;
@@ -1367,11 +1388,13 @@ body {
   .modal-actions {
     flex-direction: column;
     width: 100%;
+    align-items: stretch; /* ✅ Full width on mobile */
   }
 
   .btn-primary,
   .btn-secondary {
     width: 100%;
     justify-content: center;
+    min-width: auto; /* ✅ Override min-width on mobile */
   }
 }
