@@ -1,3 +1,7 @@
+/* ========================================
+   NAVIGATION - DESKTOP & MOBILE
+   ======================================== */
+
 .navigation {
   position: fixed;
   top: 0;
@@ -12,8 +16,11 @@
   backdrop-filter: blur(20px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+  max-width: 100vw; /* ✅ Respect viewport width */
+  box-sizing: border-box;
 }
 
+/* Logo */
 .nav-logo {
   display: flex;
   align-items: center;
@@ -22,6 +29,8 @@
   font-weight: 700;
   color: white;
   transition: transform 0.3s ease;
+  cursor: pointer;
+  z-index: 1001;
 }
 
 .nav-logo:hover {
@@ -33,7 +42,8 @@
   display: inline-block;
 }
 
-.nav-items {
+/* Desktop Navigation */
+.nav-items.desktop-nav {
   display: flex;
   list-style: none;
   gap: 10px;
@@ -91,7 +101,8 @@
   border-radius: 3px 3px 0 0;
 }
 
-.nav-status {
+/* Desktop Status */
+.nav-status.desktop-status {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -116,74 +127,12 @@
   letter-spacing: 1px;
 }
 
-/* Mobile Responsive */
-@media (max-width: 768px) {
-  .navigation {
-    padding: 15px 20px;
-    flex-wrap: wrap;
-    gap: 15px;
-  }
+/* ========================================
+   MOBILE MENU TOGGLE (HAMBURGER)
+   ======================================== */
 
-  .nav-logo {
-    font-size: 1rem;
-  }
-
-  .nav-logo span:first-child {
-    font-size: 1.5rem;
-  }
-
-  .nav-items {
-    order: 3;
-    width: 100%;
-    justify-content: space-around;
-    gap: 5px;
-  }
-
-  .nav-button {
-    padding: 10px 15px;
-    font-size: 0.9rem;
-    flex-direction: column;
-    gap: 4px;
-  }
-
-  .nav-label {
-    font-size: 0.75rem;
-  }
-
-  .nav-status {
-    order: 2;
-    padding: 6px 15px;
-  }
-
-  .status-text {
-    font-size: 0.75rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .nav-logo span:last-child {
-    display: none;
-  }
-
-  .nav-items {
-    gap: 2px;
-  }
-
-  .nav-button {
-    padding: 8px 10px;
-  }
-
-  .nav-icon {
-    font-size: 1.2rem;
-  }
-
-  .nav-label {
-    font-size: 0.7rem;
-  }
-}
-/* Mobile Menu Styles */
 .mobile-menu-toggle {
-  display: none;
+  display: none; /* Hidden on desktop */
   flex-direction: column;
   gap: 5px;
   background: none;
@@ -213,6 +162,21 @@
   transform: rotate(-45deg) translate(7px, -7px);
 }
 
+/* ========================================
+   MOBILE MENU (SLIDE-IN FROM RIGHT)
+   ======================================== */
+
+.mobile-menu-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 999;
+  backdrop-filter: blur(5px);
+}
+
 .mobile-menu {
   position: fixed;
   top: 0;
@@ -220,18 +184,23 @@
   width: 80%;
   max-width: 300px;
   height: 100vh;
+  height: 100dvh; /* ✅ Dynamic viewport height for iOS */
   background: rgba(10, 14, 39, 0.98);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(20px);
   z-index: 1000;
-  padding: 80px 20px 20px;
-  box-shadow: -5px 0 20px rgba(0, 0, 0, 0.5);
+  padding: 100px 20px 20px;
+  box-shadow: -5px 0 30px rgba(0, 0, 0, 0.5);
+  overflow-y: auto;
+  box-sizing: border-box;
 }
 
 .mobile-nav-items {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 15px;
+  margin: 0;
+  padding: 0;
 }
 
 .mobile-nav-button {
@@ -248,6 +217,7 @@
   align-items: center;
   gap: 15px;
   transition: all 0.3s ease;
+  font-family: inherit;
 }
 
 .mobile-nav-button:active {
@@ -260,12 +230,28 @@
   border-color: rgba(52, 152, 219, 0.5);
 }
 
+.mobile-status {
+  margin-top: 40px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* ========================================
+   RESPONSIVE BREAKPOINTS
+   ======================================== */
+
 @media (max-width: 768px) {
+  /* Show mobile toggle, hide desktop nav */
   .mobile-menu-toggle {
     display: flex;
   }
 
-  .nav-items {
+  .nav-items.desktop-nav,
+  .nav-status.desktop-status {
     display: none;
   }
 
@@ -273,7 +259,48 @@
     padding: 15px 20px;
   }
 
-  .nav-status {
-    display: none;
+  .nav-logo span:last-child {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-logo span:last-child {
+    display: none; /* Hide "Hossam Hassan" text on very small screens */
+  }
+
+  .mobile-menu {
+    width: 85%;
+    max-width: 280px;
+  }
+}
+/* Logo Image Styles */
+.nav-logo-img {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%; /* Circular logo */
+  object-fit: cover;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.nav-logo:hover .nav-logo-img {
+  border-color: rgba(52, 152, 219, 0.5);
+  transform: scale(1.1);
+  box-shadow: 0 0 20px rgba(52, 152, 219, 0.3);
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .nav-logo-img {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-logo-img {
+    width: 35px;
+    height: 35px;
   }
 }

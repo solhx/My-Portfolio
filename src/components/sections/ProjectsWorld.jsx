@@ -17,8 +17,8 @@ function ProjectsWorld() {
       description: 'Interactive 3D portfolio built with React, Three Fiber and GSAP animations',
       tech: ['React', 'Three.js', 'GSAP', 'WebGL'],
       color: '#3498db',
-      link: 'https://github.com/yourusername/portfolio',
-      demo: 'https://yourportfolio.com'
+      link: 'https://github.com/solhx/My-Portfolio',
+      demo: 'https://hossam-hassan-portfolio.netlify.app/'
     },
     {
       id: 2,
@@ -28,8 +28,8 @@ function ProjectsWorld() {
       description: '3D product customization tool with real-time rendering',
       tech: ['React', 'Three.js', 'Redux', 'Node.js'],
       color: '#e74c3c',
-      link: 'https://github.com/yourusername/shophub',
-      demo: 'https://shophub-demo.com'
+      link: 'https://github.com/solhx/ecommerce-project',
+      demo: 'https://hossam-ecommerce-webs.netlify.app/'
     },
     {
       id: 3,
@@ -39,8 +39,8 @@ function ProjectsWorld() {
       description: 'A modern, responsive Todo app with a clean, gradient UI built using Material-UI.',
       tech: ['React 19', 'React Router', 'Material-UI', 'local storage'],
       color: '#2ecc71',
-      link: 'https://github.com/yourusername/todolist',
-      demo: 'https://todolist-demo.com'
+      link: 'https://github.com/solhx/Todo-react',
+      demo: 'https://todo-taskkk.netlify.app/'
     },
   ]
 

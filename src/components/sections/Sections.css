@@ -315,6 +315,7 @@ body {
   grid-template-columns: 400px 1fr;
   gap: 50px;
   margin-bottom: 50px;
+   max-width: 100%; 
 }
 
 .about-left-column {
@@ -623,32 +624,77 @@ body {
   font-weight: 500;
 }
 
+/* ========================================
+   ABOUT WORLD - MOBILE RESPONSIVE
+   ======================================== */
+
 @media (max-width: 1200px) {
   .about-main-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr; /* ✅ Single column */
     gap: 40px;
+    max-width: 600px; /* ✅ Limit width */
+    margin: 0 auto 50px; /* ✅ Center horizontally */
   }
 
   .about-left-column {
-    max-width: 500px;
+    max-width: 100%; /* ✅ Full width */
     margin: 0 auto;
+  }
+
+  .about-right-column {
+    max-width: 100%; /* ✅ Full width */
   }
 }
 
 @media (max-width: 768px) {
-  .about-world .about-content,
-  .contact-info,
-  .contact-form {
-    backdrop-filter: none !important;
-    background: rgba(255, 255, 255, 0.08);
-  }
-
   .about-world .about-content {
     padding: 30px;
+    backdrop-filter: none !important;
+    background: rgba(255, 255, 255, 0.08);
+    margin: 0 auto; /* ✅ Center the content */
+    max-width: 100%; /* ✅ Don't exceed viewport */
+  }
+
+  .about-header {
+    margin-bottom: 40px;
   }
 
   .about-header h2 {
     font-size: 2.5rem;
+  }
+
+  .about-main-grid {
+    gap: 30px;
+    padding: 0; /* ✅ Remove extra padding */
+    margin: 0 auto 40px; /* ✅ Center */
+  }
+
+  .about-left-column {
+    max-width: 100%;
+  }
+
+  .about-photo img {
+    height: 300px;
+  }
+
+  .quick-info {
+    gap: 12px;
+  }
+
+  .info-card {
+    padding: 12px 15px;
+  }
+
+  .about-bio h3 {
+    font-size: 1.8rem;
+  }
+
+  .about-bio p {
+    font-size: 1.1rem;
+  }
+
+  .skills-grid {
+    gap: 15px;
   }
 
   .about-stats {
@@ -662,19 +708,47 @@ body {
 }
 
 @media (max-width: 480px) {
+  .about-world .about-content {
+    padding: 20px; /* ✅ Less padding on small screens */
+  }
+
   .about-header h2 {
     font-size: 2rem;
   }
 
-  .about-stats {
-    grid-template-columns: 1fr;
+  .about-header .about-subtitle {
+    font-size: 1rem;
+  }
+
+  .about-main-grid {
+    gap: 20px;
   }
 
   .about-photo img {
-    height: 300px;
+    height: 280px;
+  }
+
+  .about-bio h3 {
+    font-size: 1.5rem;
+  }
+
+  .about-bio p {
+    font-size: 1rem;
+  }
+
+  .about-stats {
+    grid-template-columns: 1fr; /* ✅ Single column on very small screens */
+    gap: 15px;
+  }
+
+  .stat {
+    padding: 15px;
+  }
+
+  .stat-number {
+    font-size: 1.8rem;
   }
 }
-
 /* ========================================
    PROJECTS WORLD
    ======================================== */
@@ -844,6 +918,7 @@ body {
   gap: 60px;
   max-width: 1200px;
   margin: 0 auto;
+   width: 100%;
 }
 
 .contact-info {
@@ -1024,10 +1099,16 @@ body {
   cursor: not-allowed;
 }
 
+/* ========================================
+   CONTACT WORLD - MOBILE FIXES
+   ======================================== */
+
 @media (max-width: 1200px) {
   .contact-content {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr; /* ✅ Single column on tablets/mobile */
     gap: 40px;
+    max-width: 600px; /* ✅ Limit width for better centering */
+    margin: 0 auto; /* ✅ Center horizontally */
   }
 }
 
@@ -1036,13 +1117,24 @@ body {
     font-size: 2rem;
   }
 
+  .contact-world .contact-header p {
+    font-size: 1rem;
+  }
+
   .contact-info,
   .contact-form {
     padding: 30px;
+    width: 100%; /* ✅ Full width */
+    max-width: 100%; /* ✅ Don't exceed container */
+    margin: 0 auto; /* ✅ Center each section */
+    box-sizing: border-box; /* ✅ Include padding in width */
   }
 
   .contact-content {
     gap: 30px;
+    padding: 0; /* ✅ Remove extra padding */
+    width: 100%; /* ✅ Full width */
+    max-width: 100%; /* ✅ Don't exceed viewport */
   }
 
   .contact-method {
@@ -1058,6 +1150,7 @@ body {
 
   .method-value {
     font-size: 0.9rem;
+    word-break: break-word; /* ✅ Prevent long text overflow */
   }
 
   .availability {
@@ -1068,6 +1161,15 @@ body {
 @media (max-width: 480px) {
   .contact-world .contact-header h2 {
     font-size: 1.5rem;
+  }
+
+  .contact-world .contact-header p {
+    font-size: 0.9rem;
+  }
+
+  .contact-info,
+  .contact-form {
+    padding: 20px; /* ✅ Reduce padding on small screens */
   }
 
   .contact-info h3 {
