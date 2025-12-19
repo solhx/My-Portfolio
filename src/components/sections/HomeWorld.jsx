@@ -61,7 +61,7 @@ function HomeWorld() {
             animate={{ opacity: isInView ? 1 : 0 }}
             transition={{ delay: 0.8 }}
           >
-            Creative Developer & 3D Experience Designer
+           MERN Full-Stack Web Application Developer | Crafting Dynamic and Responsive Web Experiences
           </motion.p>
 
           <motion.div

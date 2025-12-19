@@ -66,7 +66,7 @@ function ProjectsWorld() {
   ],
   color: '#2ecc71',
   link: 'https://github.com/solhx/Learning-Management-System-LMS-',
-  demo: 'https://elearning-lms.netlify.app/courses'
+  demo: 'https://elearning-lms.netlify.app'
 }
 
   ]
