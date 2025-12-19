@@ -42,6 +42,33 @@ function ProjectsWorld() {
       link: 'https://github.com/solhx/Todo-react',
       demo: 'https://todo-taskkk.netlify.app/'
     },
+    {
+  id: 4,
+  icon: '🎓',
+  category: 'E-Learning Platform',
+  title: 'Learnify LMS',
+  description:
+    'A modern e-learning platform that allows users to browse courses, enroll, track progress, and learn through a clean and responsive interface.',
+  tech: [
+    'React 19',
+    'React Router',
+    'Material-UI',
+    'Context API',
+    'REST API',
+    'cookies for auth',
+    'next.js',
+    'cloudinary for media storage',
+    'redux toolkit',
+    'node.js',
+    'express.js',
+    'mongodb'
+
+  ],
+  color: '#2ecc71',
+  link: 'https://github.com/solhx/Learning-Management-System-LMS-',
+  demo: 'https://elearning-lms.netlify.app/courses'
+}
+
   ]
 
   const openModal = (project) => {
