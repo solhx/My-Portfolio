@@ -46,7 +46,7 @@ function ProjectsWorld() {
   id: 4,
   icon: '🎓',
   category: 'E-Learning Platform',
-  title: 'Learnify LMS',
+  title: 'Elearning-lms',
   description:
     'A modern e-learning platform that allows users to browse courses, enroll, track progress, and learn through a clean and responsive interface.',
   tech: [
